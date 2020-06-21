@@ -1,0 +1,215 @@
+package com.baekdev.themultiqueue;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.baekdev.themultiqueue.DataStructure.User;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+
+public class MainActivity extends AppCompatActivity {
+    private User user;
+    private FragmentManager fm;
+    private FragmentTransaction ft;
+    private DrawerLayout drawerLayout;
+    private ImageButton lolButton;
+    private ImageButton ffxivButton;
+    private FirebaseAuth mAuth;
+    private FirebaseUser mUser;
+    private FirebaseDatabase db;
+    private DatabaseReference ref;
+    private FirebaseStorage storage;
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        user = new User();
+        mAuth = FirebaseAuth.getInstance();
+        mUser = mAuth.getCurrentUser();
+        db = FirebaseDatabase.getInstance();
+        ref = db.getReference();
+        storage = FirebaseStorage.getInstance();
+
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+                menuItem.setChecked(true);
+                drawerLayout.closeDrawers();
+
+                int id = menuItem.getItemId();
+                switch (id) {
+                    case R.id.profile_revise:
+                        Intent intent = new Intent(MainActivity.this, ProfileUpdateActivity.class);
+                        startActivity(intent);
+                        break;
+                    case R.id.nav_sub_menu_item01:
+                    case R.id.nav_sub_menu_item02:
+                        Toast.makeText(MainActivity.this, menuItem.getTitle(), Toast.LENGTH_LONG).show();
+                        break;
+                }
+                return true;
+            }
+        });
+
+        final ImageButton profileButton = findViewById(R.id.profileButton);
+        profileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawerLayout.openDrawer(GravityCompat.START);
+            }
+        });
+
+        lolButton = findViewById(R.id.lolButton);
+        lolButton.setOnClickListener(onClickListener);
+        ffxivButton = findViewById(R.id.ffxivButton);
+        ffxivButton.setOnClickListener(onClickListener);
+        fm = getSupportFragmentManager();
+
+        View headerView = navigationView.inflateHeaderView(R.layout.drawer_header);
+        final TextView header_nick = headerView.findViewById(R.id.header_nick);
+        final TextView header_email = headerView.findViewById(R.id.header_email);
+        final TextView header_lolnick = headerView.findViewById(R.id.header_lolnick);
+        final TextView header_ffnick = headerView.findViewById(R.id.header_ffnick);
+        final ImageView header_header = headerView.findViewById(R.id.header_header);
+        final ImageView header_pic = headerView.findViewById(R.id.header_pic);
+
+        profileButton.setBackgroundResource(R.drawable.circle);
+        profileButton.setClipToOutline(true);
+        header_pic.setBackgroundResource(R.drawable.circle);
+        header_pic.setClipToOutline(true);
+
+        ref.child("users").child(mUser.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()){
+                    user.setName(dataSnapshot.child("name").getValue().toString());
+                    user.setEmail(dataSnapshot.child("email").getValue().toString());
+                    header_nick.setText(user.getName());
+                    header_email.setText(user.getEmail());
+                } else {
+                    Intent intent = new Intent(MainActivity.this, CreateDataActivity.class);
+                    startActivity(intent);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("Error", databaseError.getMessage());
+            }
+        });
+
+        ref.child("userpic").child(mUser.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.child("profileImageUri").getValue() != null){
+                    String s = dataSnapshot.child("profileImageUri").getValue().toString();
+                    Glide.with(getApplicationContext()).load(s).diskCacheStrategy(DiskCacheStrategy.ALL).into(header_pic);
+                    Glide.with(getApplicationContext()).load(s).diskCacheStrategy(DiskCacheStrategy.ALL).into(profileButton);
+                } else {
+                    header_pic.setImageResource(R.drawable.default_pic);
+                    profileButton.setImageResource(R.drawable.default_pic);
+                }
+                if(dataSnapshot.child("headerImageUri").getValue() != null){
+                    String s = dataSnapshot.child("headerImageUri").getValue().toString();
+                    Glide.with(getApplicationContext()).load(s).diskCacheStrategy(DiskCacheStrategy.ALL).into(header_header);
+                } else {
+                    header_header.setImageResource(R.color.colorPrimary);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        ref.child("lolusers").child(mUser.getUid()).child("nickname").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()){
+                    header_lolnick.setText(dataSnapshot.getValue().toString());
+                } else {
+                    header_lolnick.setText("정보 없음");
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("Error", databaseError.getMessage());
+            }
+        });
+
+        ref.child("ffusers").child(mUser.getUid()).child("name").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()){
+                    header_ffnick.setText(dataSnapshot.getValue().toString());
+                } else {
+                    header_ffnick.setText("정보 없음");
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("Error", databaseError.getMessage());
+            }
+        });
+    }
+
+    View.OnClickListener onClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch(v.getId()){
+                case R.id.lolButton:
+                    lolButton.setImageResource(R.drawable.lol_selected);
+                    ffxivButton.setImageResource(R.drawable.ff14_unselected);
+                    break;
+                case R.id.ffxivButton:
+                    lolButton.setImageResource(R.drawable.lol_unselected);
+                    ffxivButton.setImageResource(R.drawable.ff14_selected);
+                    break;
+            }
+        }
+    };
+
+    public void onStart(){
+        super.onStart();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+}

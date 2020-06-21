@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "716698902249",
+    "firebase_url": "https://multiqueue-edf68.firebaseio.com",
+    "project_id": "multiqueue-edf68",
+    "storage_bucket": "multiqueue-edf68.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:716698902249:android:3702e2bb8f63a3568a5a78",
+        "android_client_info": {
+          "package_name": "com.baekdev.themultiqueue"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "716698902249-5k92b47b28sbh0841r51na66m5mjopif.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.baekdev.themultiqueue",
+            "certificate_hash": "3bf921796bc46e1dc543feca838e7d95c0795f04"
+          }
+        },
+        {
+          "client_id": "716698902249-58medp5ah7lc477a360he0ua6f0kpor9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCrPvJJAK92IeRX4fph51kWLjneTRFkbXk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "716698902249-58medp5ah7lc477a360he0ua6f0kpor9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

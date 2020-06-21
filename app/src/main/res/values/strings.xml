@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">TheMultiQueue</string>
+    <string name="user_nickname">사용자 닉네임</string>
+    <string name="user_gender">성별</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

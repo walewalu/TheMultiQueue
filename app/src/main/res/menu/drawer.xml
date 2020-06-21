@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/profile_revise"
+            android:checked="true"
+            android:title="프로필 수정" />
+    </group>
+
+    <item android:title="Game">
+        <menu>
+            <item
+                android:icon="@drawable/lol_selected"
+                android:id="@+id/nav_sub_menu_item01"
+                android:title="리그 오브 레전드" />
+            <item
+                android:icon="@drawable/ff14_selected"
+                android:id="@+id/nav_sub_menu_item02"
+                android:title="파이널 판타지 14" />
+        </menu>
+    </item>
+
+</menu>
