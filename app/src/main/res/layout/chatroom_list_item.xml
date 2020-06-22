@@ -52,7 +52,7 @@
             android:textColor="#FFFFFF"
             android:textSize="12sp" />
 
-        <EditText
+        <TextView
             android:id="@+id/room_description"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -61,7 +61,6 @@
             android:background="@drawable/rounded_chatroom2"
             android:ems="10"
             android:gravity="start|top"
-            android:inputType="textMultiLine"
             android:textSize="12sp" />
 
     </LinearLayout>
