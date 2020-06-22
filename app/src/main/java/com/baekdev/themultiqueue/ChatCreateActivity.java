@@ -10,6 +10,7 @@ import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.baekdev.themultiqueue.DataStructure.ChatRoom;
 import com.google.android.material.chip.Chip;
@@ -81,19 +82,14 @@ public class ChatCreateActivity extends AppCompatActivity {
         maxPerson.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(ChipGroup group, int checkedId) {
-                switch (checkedId){
-                    case 1:
-                        max = 2;
-                        break;
-                    case 2:
-                        max = 3;
-                        break;
-                    case 3:
-                        max = 4;
-                        break;
-                    case 4:
-                        max = 5;
-                        break;
+                if (checkedId == group.getChildAt(0).getId()){
+                    max = 2;
+                } else if (checkedId == group.getChildAt(1).getId()) {
+                    max = 3;
+                } else if (checkedId == group.getChildAt(2).getId()) {
+                    max = 4;
+                } else if (checkedId == group.getChildAt(3).getId()) {
+                    max = 5;
                 }
             }
         });
@@ -118,13 +114,10 @@ public class ChatCreateActivity extends AppCompatActivity {
         selectGame.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(ChipGroup group, int checkedId) {
-                switch (checkedId){
-                    case 5:
-                        game = GAME_LOL;
-                        break;
-                    case 6:
-                        game = GAME_FF14;
-                        break;
+                if (checkedId == group.getChildAt(0).getId()){
+                    game = GAME_LOL;
+                } else if (checkedId == group.getChildAt(1).getId()) {
+                    game = GAME_FF14;
                 }
             }
         });
