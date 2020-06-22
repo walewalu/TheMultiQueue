@@ -1,5 +1,6 @@
 package com.baekdev.themultiqueue.CreateData;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -14,10 +15,15 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.baekdev.themultiqueue.DataStructure.FFFavMode;
+import com.baekdev.themultiqueue.DataStructure.FFFavStyle;
+import com.baekdev.themultiqueue.DataStructure.FFJob;
+import com.baekdev.themultiqueue.DataStructure.FFUserInfo;
 import com.baekdev.themultiqueue.DataStructure.LoLFavPos;
 import com.baekdev.themultiqueue.DataStructure.LoLFavMode;
 import com.baekdev.themultiqueue.DataStructure.LoLFavStyle;
 import com.baekdev.themultiqueue.DataStructure.User;
+import com.baekdev.themultiqueue.MainActivity;
 import com.baekdev.themultiqueue.R;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
@@ -151,9 +157,12 @@ public class CreateDataLoL extends Fragment {
                 if(!userNick.isEmpty()) {
                     ref.child("lolusers").child(mUser.getUid()).setValue(map);
                     ref.child("lolusers").child(mUser.getUid()).child("lol_favPos").setValue(favPosData);
-                    Log.d("TAG", Boolean.toString(favPosData.isAdc()));
                     ref.child("lolusers").child(mUser.getUid()).child("lol_favMode").setValue(favModeData);
                     ref.child("lolusers").child(mUser.getUid()).child("lol_favStyle").setValue(favStyleData);
+                    ref.child("ffusers").child(mUser.getUid()).setValue(new FFUserInfo("",""));
+                    ref.child("ffusers").child(mUser.getUid()).child("ff_job").setValue(new FFJob());
+                    ref.child("ffusers").child(mUser.getUid()).child("ff_favStyle").setValue(new FFFavStyle());
+                    ref.child("ffusers").child(mUser.getUid()).child("ff_favMode").setValue(new FFFavMode());
                     getActivity().finish();
                 } else {
                     Toast.makeText(getContext(), "이름은 반드시 입력해야 합니다.", Toast.LENGTH_SHORT).show();

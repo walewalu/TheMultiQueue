@@ -323,32 +323,6 @@ public class ProfileUpdateFragment extends Fragment {
                     c.setPadding(paddingDp, paddingDp, paddingDp, paddingDp);
                     c.setClickable(true);
                     c.setCheckable(true);
-                    switch(s){
-                        case "휴런":
-                            if (currentTribe.equals("hyur")) c.setChecked(true);
-                            break;
-                        case "미코테":
-                            if (currentTribe.equals("miqote")) c.setChecked(true);
-                            break;
-                        case "라라펠":
-                            if (currentTribe.equals("lalafell")) c.setChecked(true);
-                            break;
-                        case "엘레젠":
-                            if (currentTribe.equals("elezen")) c.setChecked(true);
-                            break;
-                        case "루가딘":
-                            if (currentTribe.equals("roeqadyn")) c.setChecked(true);
-                            break;
-                        case "아우라":
-                            if (currentTribe.equals("aura")) c.setChecked(true);
-                            break;
-                        case "비에라":
-                            if (currentTribe.equals("viera")) c.setChecked(true);
-                            break;
-                        case "로스가르":
-                            if (currentTribe.equals("hrothgar")) c.setChecked(true);
-                            break;
-                    }
                     c.setCheckedIconVisible(false);
                     c.setChipBackgroundColorResource(R.color.chip_bg);
                     chipTribe.setSingleSelection(true);
@@ -800,8 +774,6 @@ public class ProfileUpdateFragment extends Fragment {
             if (resultCode == Activity.RESULT_OK) {
                 try {
                     // 선택한 이미지에서 비트맵 생성
-
-
                     InputStream in = ((ProfileUpdateActivity)getActivity()).getContentResolver().openInputStream(data.getData());
                     final Bitmap img1 = BitmapFactory.decodeStream(in);
                     in.close();
