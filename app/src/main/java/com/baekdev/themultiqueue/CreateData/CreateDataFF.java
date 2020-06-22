@@ -207,7 +207,7 @@ public class CreateDataFF extends Fragment {
                     ref.child("ffusers").child(mUser.getUid()).child("ff_job").setValue(jobData);
                     ref.child("ffusers").child(mUser.getUid()).child("ff_favStyle").setValue(favModeData);
                     ref.child("ffusers").child(mUser.getUid()).child("ff_favMode").setValue(favStyleData);
-                    ref.child("lolusers").child(mUser.getUid()).setValue("");
+                    ref.child("lolusers").child(mUser.getUid()).child("nickname").setValue("");
                     ref.child("lolusers").child(mUser.getUid()).child("lol_favPos").setValue(new LoLFavPos());
                     ref.child("lolusers").child(mUser.getUid()).child("lol_favMode").setValue(new LoLFavMode());
                     ref.child("lolusers").child(mUser.getUid()).child("lol_favStyle").setValue(new LoLFavStyle());
