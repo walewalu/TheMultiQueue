@@ -111,6 +111,7 @@ public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomAdapter.MyView
                             if (room.getCurrent_Members() < room.getMaximum_Members()) {
                                 getV.getContext().startActivity(intent);
                                 ref.child("chatroom").child(room.getId()).child("current_Members").setValue(room.getCurrent_Members() + 1);
+                                ref.child("chatdata").child(room.getId()).child("participant").child(mUser.getUid()).setValue("user");
                             } else {
                                 Toast.makeText(getV.getContext(), "정원이 초과되었습니다.", Toast.LENGTH_SHORT).show();
                             }
